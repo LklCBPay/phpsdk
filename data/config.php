@@ -13,5 +13,5 @@ return array(
   'notifyAddrUrl' => 'http://商户网址/lakala_php_demo/ctrl/DownLoadMerSetFile.php',
 
   //支付、订单查询地址
-  'ppayGateUrl' => 'http://testinl.lakala.com:8080/ppayGate/CrossBorderWebPay.do',
+  'ppayGateUrl' => 'http://testintl.lakala.com:8080/ppayGate/CrossBorderWebPay.do',
 );
