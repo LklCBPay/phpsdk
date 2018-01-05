@@ -6,6 +6,7 @@ error_reporting(0);
 define("_PATH_", dirname(__DIR__));
 $config = include(_PATH_.'/data/config.php');
 include(_PATH_.'/common/function.php');
+include(_PATH_.'/common/AESUtil.php');
 include(_PATH_.'/class/HttpClient.class.php');
 //POST数据
 $post = $_POST;$_POST = null;

@@ -42,6 +42,18 @@
       <li>
         <i>7</i> <a href="page/merRefund.php">商户退款 merchant refund</a>
       </li>
+      <li>
+        <i>8</i> <a href="page/batchTradeClientDemo.php">批量交易接口-申请批量交易令牌 Batch Transaction Interface</a>
+      </li>
+      <li>
+        <i>9</i> <a href="page/batchTradeUploadFileDemo.php">批量交易接口-上传批量文件 Batch Transaction Interface</a>
+      </li>
+      <li>
+        <i>10</i> <a href="page/batchTradeQueryDemo.php">批量交易接口-批量交易状态查询 Batch Transaction Interface</a>
+      </li>
+      <li>
+        <i>11</i> <a href="page/batchTradeDownloadFileDemo.php">批量交易接口-下载（补）回盘文件 Batch Transaction Interface</a>
+      </li>
     </ul>
   </body>
 </html>

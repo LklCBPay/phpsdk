@@ -282,3 +282,56 @@ function get_dir_list($path){
   }
   return $list;
 }
+
+/**
+ * zip文件内容摘要（对文件内容加盐做MD5,盐值拼接在内容之前）
+ */
+function fileDigestWithSalt($salt, $fileName){
+	 $context = readFileStr($fileName);
+	 $value = $salt.$context;
+     return md5($value);
+}
+
+/**
+ * 读取文件(zip中只含有一个文件)
+ */
+function readFileStr($filePath){
+    $zip = zip_open($filePath);
+    $buf = "";
+    if ($zip){
+        while($zip_entry = zip_read($zip)){
+            if (zip_entry_open($zip, $zip_entry, "r")) {
+			 $buf = zip_entry_read($zip_entry, zip_entry_filesize($zip_entry));
+			 zip_entry_close($zip_entry);
+			}
+        }
+    }
+    zip_close($zip);
+    return $buf;
+}
+
+
+//转码方法
+function auto_read($str, $charset='UTF-8') {
+    $item = mb_detect_encoding($str,'auto');
+    return mb_convert_encoding($str,$charset,$item);
+}
+
+/** 
+* 转换一个String字符串为byte数组 
+*/
+function getBytes($str) { 
+  $bytes = array(); 
+  for($i = 0; $i < strlen($str); $i++){ 
+     $bytes[] = ord($str[$i]); 
+  } 
+  return $bytes; 
+}
+
+function toStr($bytes) { 
+    $str = ''; 
+    foreach($bytes as $ch) { 
+        $str .= chr($ch); 
+    } 
+    return $str; 
+} 
