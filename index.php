@@ -54,6 +54,10 @@
       <li>
         <i>11</i> <a href="page/batchTradeDownloadFileDemo.php">批量交易接口-下载（补）回盘文件 Batch Transaction Interface</a>
       </li>
+      <li>
+        <i>12</i> <a href="page/authDemo.php">认证接口 gate/auth</a>
+      </li>
+        
     </ul>
   </body>
 </html>
