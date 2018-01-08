@@ -123,9 +123,8 @@ if($retCode != '0000'){
     if(empty($reqData)){
       echo '解密业务参数失败';
     }else{
-      $reqData = json_decode($reqData, true);
       echo "<br/>----------以下为认证的结果 ---------<br/>";
-      echo "<br/>----------认证成功 ---------<br/>";
+      echo mb_convert_encoding($reqData, 'utf-8', 'gbk');
     }
   }
 }
