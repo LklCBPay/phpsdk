@@ -11,7 +11,8 @@ $ver = $post['ver']; // 版本号
 $merId = $post['merId']; //商户号
 //时间戳
 $dateStr = date('YmdHis').mt_rand(100000, 999999);
-$reqType = $post["reqType"]; // 业务类型 默认为""
+$reqType = $post["reqType"]; // 业务类型 暂时默认为""
+$payTypeId = $post["payTypeId"];; //业务值 暂时默认为空
 
 $bizType = $post["bizType"]; // 业务类型：DS-代收
 $fileCount = $post["fileCount"]; //zip包中文件数量
@@ -51,15 +52,36 @@ $map = array(
 
 $json = json_encode_s($map);
 
-// AES对称密钥加密以后的json1
-$aes = new AESUtil();
-$json1 = $aes->encrypt($json, $merDesStr);
+$json1="";
+if("3.0.0" == $ver){
+	// AES对称密钥加密以后的json1
+	$aes = new AESUtil();
+	$json1 = $aes->encrypt($json, $merDesStr);
+} else {
+	// DES对称密钥加密以后的json1
+	$json1 = des_encrypt($merDesStr, $json);
+}
 
-$macStr = $merId.$ver.$dateStr.$reqType.$json1;
+$macStr = "";
+if ("1.0.0" == $ver) {
+    if (empty($payTypeId)) {
+        $macStr = $merId.$ver.$dateStr.$reqType.$json1;
+    } else {
+        $macStr = $merId.$ver.$dateStr.$reqType.$json1.$payTypeId;
+    }
+} else if ("2.0.0" == $ver || "3.0.0" == $ver) {
+    $macStr = $merId.$ver.$dateStr.$json1;
+}
 
-//商户256 hash加密保持不变.
-$macStr = hash('sha256', $macStr, true);
-$macStr = bin2hex($macStr);
+
+if ("3.0.0" == $ver) {
+	//商户256 hash加密保持不变.
+	$macStr = hash('sha256', $macStr, true);
+	$macStr = bin2hex($macStr);
+} else {
+	//商户sha1 hash加密保持不变.
+	$macStr = sha1($macStr);
+}
 
 //私钥加密
 $maced="";
@@ -102,11 +124,31 @@ if($retCode != '0000'){
   $retTs = $retMap["ts"];
   $retEncData = $retMap["encData"];
   $retMac = $retMap["mac"];
-
+  $retReqType = $retMap["reqType"];
+  $retPayTypeId = $retMap["payTypeId"];
+  
+  $retMacStr = "";
   // sha256 加密
-  $retMacStr = $retCode.$retMsg.$merId.$ver.$retTs.$retEncData;
-  $retMacStr = hash('sha256', mb_convert_encoding($retMacStr, 'gbk', 'utf-8'), true);
-  $retMacStr = bin2hex($retMacStr);
+  if ("1.0.0" == $retVer){
+        if (empty($retPayTypeId)) {
+            $retMacStr = $retCode.$retMsg.$retMerId.$retVer.$retTs.$retReqType.$retEncData;
+        } else {
+            $retMacStr = $retCode.$retMsg.$retMerId.$retVer.$retTs.$retReqType.$retEncData.$retPayTypeId;
+        }
+  } else if ("2.0.0" == $retVer) {
+        $retMacStr = $retCode.$retMsg.$retMerId.$retVer.$retTs.$retEncData;
+  } else if ("3.0.0"  == $retVer) {
+        $retMacStr = $retCode.$retMsg.$retMerId.$retVer.$retTs.$retEncData;
+  }
+  //$retMacStr = $retCode.$retMsg.$merId.$ver.$retTs.$retEncData;
+	if ("3.0.0" == $retVer) {
+	  $retMacStr = hash('sha256', mb_convert_encoding($retMacStr, 'gbk', 'utf-8'), true);
+	  $retMacStr = bin2hex($retMacStr);
+	} else {
+		//商户sha1 hash加密保持不变.
+		$retMacStr = sha1(mb_convert_encoding($retMacStr, 'gbk', 'utf-8'));
+	}
+
 
   //SHA-1加密响应返回的mac
   $reqMacStr1 = '';
@@ -114,9 +156,14 @@ if($retCode != '0000'){
   if($retMacStr != $reqMacStr1){
     echo 'MAC校验失败';
   }else{
+  	$reqData = "";
   	// 解密效果如下
-  	$aes2 = new AESUtil();
-    $reqData = $aes2->decrypt($retEncData, $merDesStr);
+    if ("3.0.0" == $retVer) {
+        $aes2 = new AESUtil();
+        $reqData = $aes2->decrypt($retEncData, $merDesStr);
+    } else {
+        $reqData = des_decrypt($merDesStr, $retEncData);
+    }
     if(empty($reqData)){
       echo '解密业务参数失败';
     }else{
