@@ -33,6 +33,8 @@ include '../common/common.php';
       </p>
       <p>业务类型business type:<input type="text" name="reqType" value="B0013" />
       </p>
+      <p>payTypeId:<input type="text" name="payTypeId" value="4" />
+      </p>
       <p>商户号merchant ID:<input type="text" name="merId" value="<?php echo $config['mid']; ?>" />
       </p>
       <p>
@@ -57,7 +59,7 @@ include '../common/common.php';
       </p>
       <p>
         银行卡号:
-        <input type="text" name="cardNo" value="11111">
+        <input type="text" name="cardNo" value="6217001210067001888">
       </p>
       <p>
         持卡人姓名:

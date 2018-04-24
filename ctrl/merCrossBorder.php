@@ -107,6 +107,7 @@ if ("1.0.0" == $ver) {
     $macStr = $merId.$ver.$dateStr.$json1;
 }
 
+echo $macStr;
 
 if ("3.0.0" == $ver) {
 	//商户256 hash加密保持不变.
@@ -127,6 +128,7 @@ $http_data = array(
   'ver' => $ver,
   'merId' => $merId,
   'reqType' => $reqType,
+  'payTypeId' => $payTypeId,
   'ts' => $dateStr,
   'encKey' => $encKey,
   'encData' => $json1,
