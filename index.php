@@ -58,7 +58,10 @@
         <i>12</i> <a href="page/authDemo.php">认证接口 gate/auth</a>
       </li>
       <li>
-        <i>13</i> <a href="page/queryStatusDemo.php">单笔试试代付状态查询 /gate/queryStatus</a>
+        <i>13</i> <a href="page/queryStatusDemo.php">单笔实时代付状态查询 /gate/queryStatus</a>
+      </li>
+      <li>
+        <i>13</i> <a href="page/merCrossBorder.php">单笔实时收款 ppayGate/merCrossBorderAction.do</a>
       </li>
     </ul>
   </body>
